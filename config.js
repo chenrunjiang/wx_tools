@@ -9,6 +9,4 @@ Date:2018年2月5日
 	"appsrcret": "xxxxxxxxxxxxxxxxxxxxxxxxxx",
 }
 */
-export default [
-	
-]
+export default []

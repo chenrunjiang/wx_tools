@@ -58,7 +58,12 @@ export default {
 
         let outputpath = Date.now() + '.csv';
         fs.writeFileSync(path.join(__dirname, "files/" + outputpath), iconv.encode(txt, 'GBK'));
-        log(`已保存到 <a href="/${outputpath}">${outputpath}</a>，遇到错误请重试`);
+
+        if (log == console.log) {
+            log(`已保存到 files/${outputpath}，遇到错误请重试`);
+        } else {
+            log(`已保存到 <a href="/${outputpath}">${outputpath}</a>，遇到错误请重试`);
+        }
     },
 
     async getOne() {
