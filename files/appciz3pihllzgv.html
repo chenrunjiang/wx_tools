@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title></title>
+        <style media="screen">
+        html,body {
+            margin: 0;
+            box-sizing: border-box;
+            height: 100%;
+        }
+
+        * {
+            font-family: "微软雅黑";
+        }
+
+        #app {
+            height: 100%;
+            padding: 5px;
+            margin: 0;
+            box-sizing: border-box;
+            outline:none;
+            overflow-x: auto;
+        }
+        </style>
+    </head>
+    <body>
+        <pre id="app" contenteditable="true"></pre>
+
+        <script src="https://cdn.staticfile.org/socket.io/1.7.3/socket.io.min.js" charset="utf-8"></script>
+        <script>
+            var app = document.getElementById('app');
+            var str = '', str_len;
+
+            const socket = io.connect(location.host);
+
+            socket.on('output', (msg) => {
+                app.innerHTML += msg;
+                app.scrollTop = app.scrollHeight
+                str_len = app.innerText.length;
+                po_Last_Div(app);
+            })
+
+            app.oninput = function(input) {
+                if (app.innerText.charCodeAt(app.innerText.length-1)==10) {
+                    send(app.innerText.substr(str_len));
+                }
+            }
+
+            function send(str) {
+                console.log(str)
+                socket.emit("msg", str);
+            }
+
+            function po_Last_Div(obj) {
+                if (window.getSelection) {
+                    obj.focus();
+                    var range = window.getSelection();
+                    range.selectAllChildren(obj);
+                    range.collapseToEnd();
+                }
+                else if (document.selection) {
+                    var range = document.selection.createRange();
+                    range.moveToElementText(obj);
+                    range.collapse(false);
+                    range.select();
+                }
+            }
+
+            window.onresize = function() {
+                app.scrollTop = app.scrollHeight
+            }
+        </script>
+    </body>
+</html>
